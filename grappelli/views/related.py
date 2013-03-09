@@ -88,7 +88,11 @@ def autocomplete_lookup(request):
             model_name = request.GET.get('model_name')
             model = models.get_model(app_label, model_name)
             filters = {}
+            
             # FILTER
+            if hasattr(model, 'autocomplete_filters'):
+                filters = model.autocomplete_filters(request)
+
             if request.GET.get('query_string', None):
                 for item in request.GET.get('query_string').split("&"):
                     if item.split("=")[0] != "t":
